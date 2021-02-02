@@ -8,7 +8,7 @@ import {
     ContributionGraph,
     StackedBarChart
   } from "react-native-chart-kit";
-const Graph = ({data}) => {
+const Graph = ({data, dates}) => {
     return (
         <View>
         <Text>Bezier Line Chart</Text>

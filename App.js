@@ -26,7 +26,16 @@ const App = () => {
       [moment().subtract(4, 'days')]: 5000
     }
   ]);
-  
+
+  const getDates = () => {
+    const dates = dataPoints.map(pair => Object.keys(pair)[0])
+    return dates;
+  }
+  const getAmounts = () => {
+    const amount = dataPoints.map(pair => Object.values(pair)[0])
+    return amount;
+  }
+
   const [gigs, setGigs] = useState([
     {
       description: 'Freelance Job',
@@ -91,7 +100,7 @@ const App = () => {
         </View>
       ))}
 
-      <Graph data={gigs}/>
+      <Graph dates={getDates} data={gigs}/>
     </SafeAreaView>
   )
 }
