@@ -4,26 +4,26 @@ import Todo from './components/Todo';
 //use uuid for keys
 
 const App = () => {
-  const [input, setInput] = useState('');
-  const [todos, setTodos] = useState([]);
-  const addTodo = () => {
-    setTodos([input, ...todos]);
-    setInput('');
-  }
+  const [description, setDescription] = useState('');
+  const [amount, setAmount] = useState('');
+  const [gisg, setGigs] = useState([
+    {
+      description: 'Freelance Job',
+      amount: 400.00
+    }
+  ]);
+
   return (
     <SafeAreaView>
       <View>
-          <Text style={styles.firstLabel}>Let's Build a React Native App in One Day</Text>
+          <Text style={styles.firstLabel}> 🍏 Income Tracker</Text>
       </View>
 
-     <ScrollView>
-     {todos.map(todo=>(
-        <Todo title={todo}/>
-      ))}
-     </ScrollView>
-     
-      <TextInput style = { styles.todoInput} value={input} onChangeText={text => setInput(text)}/>
-      <Button title="Add Button" onPress={addTodo}/>
+    
+      <TextInput placeholder = "Enter description" keyboardType = "default"  style = { styles.todoInput} value={description} onChangeText={text => setDescription(text)}/>
+
+      <TextInput placeholder = "Enter the amount you made" keyboardType = "numeric" style = { styles.todoInput} value={amount} onChangeText={text => setAmount(text)}/>
+      {/* <Button title="Add Button" onPress={addTodo}/> */}
     </SafeAreaView>
   )
 }
