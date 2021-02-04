@@ -1,26 +1,16 @@
 import React from 'react'
 import {StyleSheet, Dimensions,ScrollView,  TextInput, Text, View, SafeAreaView, Button} from 'react-native';
-import {
-    LineChart,
-    BarChart,
-    PieChart,
-    ProgressChart,
-    ContributionGraph,
-    StackedBarChart
-  } from "react-native-chart-kit";
+import {LineChart} from "react-native-chart-kit";
 const Graph = ({data, dates}) => {
     return (
         <View>
         <Text>Bezier Line Chart</Text>
         <LineChart
           data={{
-            labels: ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"],
+            labels: dates,
             datasets: [
               {
-                data: [
-                 data[0].amount,
-                 data[1].amount
-                ]
+                data: data
               }
             ]
           }}

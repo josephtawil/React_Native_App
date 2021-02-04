@@ -1,40 +1,67 @@
 import React,{Component, useState, useEffect} from 'react';
-import {StyleSheet, ScrollView,  TextInput, Text, View, SafeAreaView, Button} from 'react-native';
+import {StyleSheet, Dimensions, ScrollView,  TextInput, Text, View, SafeAreaView, Button} from 'react-native';
 import Graph from './components/Graph'
 import moment from 'moment';
-import Todo from './components/Todo';
+
 //use uuid for keys
 
 const App = () => {
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');
   const [labels, setLabels] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0);
   const [dataPoints, setDataPoints] = useState([
     {
-      [moment()]: 2000
+      date: moment().format('LL'), amount: 2000
     },
     {
-      [moment().subtract(1,'days')]: 2000
+      date: moment().subtract(1,'days').format('LL'), amount: 2000
     },
     {
-      [moment().subtract(2, 'days')]: 3000
+      date: moment().subtract(2, 'days').format('LL'), amount: 3000
     },
     {
-      [moment().subtract(3, 'days')]: 4000
+      date: moment().subtract(3, 'days').format('LL'), amount: 4000
     },
     {
-      [moment().subtract(4, 'days')]: 5000
+      date: moment().subtract(4, 'days').format('LL'), amount: 5000
     }
   ]);
 
-  const getDates = () => {
-    const dates = dataPoints.map(pair => Object.keys(pair)[0])
-    return dates;
+  const [transformedData, setTransformedData] = useState([]);
+  useEffect(() => {
+    setTransformedData(transformData(groupBy(dataPoints, 'date')));
+  },[dataPoints]);
+
+
+  const groupBy = (array, key) => 
+     array.reduce((rv,x)=>{
+      (rv[x[key]] = rv[x[key]] || []).push(x);
+      return rv;
+    },{});
+  
+
+  const getDates = () =>  transformedData.map(pair => pair.date)
+
+  const getAmounts = () => transformedData.map(pair => pair.amount)
+    
+
+  const transformData = (groupedData) => {
+    const transformedArray = [];
+
+    Object.entries(groupedData).forEach(entry => {
+      // array of objects
+      const total = entry[1].reduce((total, pair) => total + pair.amount, 0)
+      transformedArray.push({date: entry[0], amount: total})
+    })
+
+    const sortedArray = transformedArray.sort((a,b)=> moment(a['date']).diff(moment(b['date'])));
+  
+    return sortedArray;
   }
-  const getAmounts = () => {
-    const amount = dataPoints.map(pair => Object.values(pair)[0])
-    return amount;
-  }
+
+
+  
 
   const [gigs, setGigs] = useState([
     {
@@ -48,19 +75,11 @@ const App = () => {
       timestamp: new Date()
     }
   ]);
-  const [totalAmount, setTotalAmount] = useState(0);
-
-  useEffect(() => {
-    
-  }, [gigs])
-
+ 
+ 
 
   useEffect(() =>{
-    const total = gigs.reduce((total, gig) =>{
-      return total + Number(gig.amount)
-    }, 0);
-
-    setTotalAmount(total);
+    setTotalAmount(gigs.reduce((total, gig) =>  total + Number(gig.amount), 0)) ;
   }, [gigs]);
 
   const addGig =  () =>{
@@ -78,6 +97,7 @@ const App = () => {
           <Text style={styles.firstLabel}> 🍏 Income Tracker</Text>
       </View>
 
+     
       <View>
         <Text> Total Income ${totalAmount}</Text>
       </View>
@@ -100,7 +120,7 @@ const App = () => {
         </View>
       ))}
 
-      <Graph dates={getDates} data={gigs}/>
+      <Graph dates={getDates()} data={getAmounts()}/>
     </SafeAreaView>
   )
 }

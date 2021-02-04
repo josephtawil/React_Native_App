@@ -12,6 +12,7 @@
   "dependencies": {
     "moment": "^2.29.1",
     "react": "16.13.1",
+    "react-charts": "^2.0.0-beta.7",
     "react-native": "0.63.4",
     "react-native-chart-kit": "^6.10.1",
     "react-native-svg": "^12.1.0"
