@@ -46,13 +46,15 @@ const App = () => {
   const getAmounts = () => transformedData.map(pair => pair.amount)
     
 
+  console.log("Get Dates", getDates())
+  console.log("Get Amounts", getAmounts())
   const transformData = (groupedData) => {
     const transformedArray = [];
 
     Object.entries(groupedData).forEach(entry => {
       // array of objects
       const total = entry[1].reduce((total, pair) => total + pair.amount, 0)
-      transformedArray.push({date: entry[0], amount: total})
+      transformedArray.push({date: moment(entry[0]).format("MMMM DD"), amount: total})
     })
 
     const sortedArray = transformedArray.sort((a,b)=> moment(a['date']).diff(moment(b['date'])));
@@ -88,6 +90,11 @@ const App = () => {
       amount: amount
     }]);
 
+    setDataPoints([...dataPoints, 
+      {
+        date: moment().format('LL'),
+        amount: Number(amount)
+      }])
     setDescription('');
     setAmount('');
   }
