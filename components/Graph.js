@@ -7,10 +7,10 @@ const Graph = ({data, dates}) => {
         <Text>Bezier Line Chart</Text>
         <LineChart
           data={{
-            labels: dates,
+            labels: ["February 04", "February 05", "February 06", "February 07", "February 08"],
             datasets: [
               {
-                data: data
+                data: [1000, 4000, 3000, 2000, 2000]
               }
             ]
           }}
